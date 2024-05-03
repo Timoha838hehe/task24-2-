@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 2</title>
+</head>
+<body>
+    <h1>Page 2</h1>
+    <p id="ageDisplay"></p>
+
+    <script>
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const month = today.getMonth() - birth.getMonth();
+            if (month < 0 || (month === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function askForBirthDate() {
+            const birthDate = prompt("Please enter your birth date (YYYY-MM-DD):");
+            if (birthDate) {
+                document.cookie = `birthDate=${birthDate}`;
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const birthCookie = document.cookie.split('; ').find(row => row.startsWith('birthDate='));
+            if (!birthCookie) {
+                askForBirthDate();
+            } else {
+                const birthDate = birthCookie.split('=')[1];
+                const age = calculateAge(birthDate);
+                document.getElementById('ageDisplay').textContent = `Your age is ${age} years old.`;
+            }
+        });
+    </script>
+</body>
+</html>
